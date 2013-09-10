@@ -329,7 +329,7 @@ Umbraco.Application.Actions = function () {
         actionAudit: function () {
             /// <summary></summary>
 
-            UmbClientMgr.openModalWindow('dialogs/viewAuditTrail.aspx?nodeId=' + UmbClientMgr.mainTree().getActionNode().nodeId + '&rnd=' + this._utils.generateRandom(), uiKeys['actions_auditTrail'], true, 550, 500);
+            UmbClientMgr.openModalWindow('dialogs/viewAuditTrail.aspx?nodeId=' + UmbClientMgr.mainTree().getActionNode().nodeId + '&rnd=' + this._utils.generateRandom(), uiKeys['actions_auditTrail'], true, 650, 500);
         },
 
         actionPackage: function () {

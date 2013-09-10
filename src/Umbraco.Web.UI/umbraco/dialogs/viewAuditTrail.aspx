@@ -21,9 +21,9 @@
               <Columns>
                 <asp:TemplateColumn>
                   <HeaderTemplate>
-                    <b>
+                    <div style="width:100px"><b>
                       <%=umbraco.ui.Text("action")%>&nbsp;&nbsp;
-                    </b>
+                    </b></div>
                   </HeaderTemplate>
                   <ItemTemplate>
                     <%# FormatAction(DataBinder.Eval(Container.DataItem, "LogType", "{0}")) %>
@@ -31,9 +31,9 @@
                 </asp:TemplateColumn>
                 <asp:TemplateColumn>
                   <HeaderTemplate>
-                    <b>
+                    <div style="width:150px"><b>
                       <%=umbraco.ui.Text("user")%>
-                    </b>
+                    </b></div>
                   </HeaderTemplate>
                   <ItemTemplate>
                     <%# umbraco.BusinessLogic.User.GetUser(int.Parse(DataBinder.Eval(Container.DataItem, "UserId", "{0}"))).Name%>
@@ -41,9 +41,9 @@
                 </asp:TemplateColumn>
                 <asp:TemplateColumn>
                   <HeaderTemplate>
-                    <b>
+					<div style="width:200px"><b>
                       <%=umbraco.ui.Text("date")%>
-                    </b>
+                    </b></div>
                   </HeaderTemplate>
                   <ItemTemplate>
                     <%# DataBinder.Eval(Container.DataItem, "Timestamp", "{0:D} {0:T}") %>
