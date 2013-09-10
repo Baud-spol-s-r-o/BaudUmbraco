@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -18,25 +19,35 @@ namespace umbraco.presentation.members {
         }
 
         private void bindRp() {
-            string _letter = Request.QueryString["letter"];
-            if (!string.IsNullOrEmpty(_letter)) {
-                if (cms.businesslogic.member.Member.InUmbracoMemberMode())
-                {
-                    if (_letter == "#")
-                    {
-                        rp_members.DataSource = cms.businesslogic.member.Member.getAllOtherMembers();
-                    }
-                    else
-                    {
-                        rp_members.DataSource = cms.businesslogic.member.Member.getMemberFromFirstLetter(_letter.ToCharArray()[0]);
-                    }
-                }
-                else
-                {
-                    rp_members.DataSource = System.Web.Security.Membership.FindUsersByName(_letter + "%");
-                }
-                rp_members.DataBind();
-            }
+			if (UmbracoSettings.ShowMembersInFlatList)
+			{
+				var members = cms.businesslogic.member.Member.GetAllAsList().OrderBy(m => m.Text.Split(' ').Reverse().ToArray()[0]);
+				rp_members.DataSource = members;
+				rp_members.DataBind();
+			}
+			else
+			{
+				string _letter = Request.QueryString["letter"];
+				if (!string.IsNullOrEmpty(_letter))
+				{
+					if (cms.businesslogic.member.Member.InUmbracoMemberMode())
+					{
+						if (_letter == "#")
+						{
+							rp_members.DataSource = cms.businesslogic.member.Member.getAllOtherMembers();
+						}
+						else
+						{
+							rp_members.DataSource = cms.businesslogic.member.Member.getMemberFromFirstLetter(_letter.ToCharArray()[0]);
+						}
+					}
+					else
+					{
+						rp_members.DataSource = System.Web.Security.Membership.FindUsersByName(_letter + "%");
+					}
+					rp_members.DataBind();
+				}
+			}
         }
 
         public void bindMember(object sender, RepeaterItemEventArgs e) {

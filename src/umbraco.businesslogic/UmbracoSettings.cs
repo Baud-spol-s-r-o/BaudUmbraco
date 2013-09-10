@@ -365,6 +365,15 @@ namespace umbraco
 			get { return Umbraco.Core.Configuration.UmbracoSettings.NotificationDisableHtmlEmail; }
         }
 
+		/// <summary>
+		/// Gets a value indicating whether sort members in tree by firts letter or not
+		/// </summary>
+		/// <value><c>True</c> if member tree is generated without letter folders</value>
+		public static bool ShowMembersInFlatList
+		{
+			get { return Umbraco.Core.Configuration.UmbracoSettings.ShowMembersInFlatList; }
+		}
+
         /// <summary>
         /// Gets the allowed attributes on images.
         /// </summary>

@@ -804,6 +804,24 @@ namespace Umbraco.Core.Configuration
 		}
 
 		/// <summary>
+		/// Gets a value indicating whether sort members in tree by first letter or not
+		/// </summary>
+		public static bool ShowMembersInFlatList
+		{
+			get
+			{
+				try
+				{
+					return bool.Parse(GetKey("/settings/content/backend/ShowMembersInFlatList"));
+				}
+				catch
+				{
+					return false;
+				}
+			}
+		}
+
+		/// <summary>
 		/// Gets a value indicating whether notification-emails are HTML.
 		/// </summary>
 		/// <value>

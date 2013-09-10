@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Web;
 using System.Xml;
@@ -40,6 +41,10 @@ namespace umbraco
         {
             rootNode.NodeType = "init" + TreeAlias;
             rootNode.NodeID = "init";
+			if (UmbracoSettings.ShowMembersInFlatList)
+			{
+				rootNode.Action = "javascript:viewMembers('');";
+			}
         }
 
         /// <summary>
@@ -103,7 +108,7 @@ function openContentItem(id) {
             // letter = ;
 
             XmlNode root = Tree.DocumentElement;
-            if (letter != "")
+			if (UmbracoSettings.ShowMembersInFlatList || letter != "")
             {
                 if (ContentItemParent != "") // show contentitems owned by the specific member!
                 {
@@ -136,8 +141,26 @@ function openContentItem(id) {
                 }
                 else // list all members with selected first character.
                 {
-                    //if letters equals Others show members that not starts with a through z
-                    if (letter.Equals("Others"))
+					if (UmbracoSettings.ShowMembersInFlatList)
+					{
+						var members = Member.GetAllAsList().OrderBy(m => m.Text.Split(' ').Reverse().ToArray()[0]);
+						foreach (Member m in members)
+						{
+							XmlElement treeElement = Tree.CreateElement("tree");
+
+							treeElement.SetAttribute("nodeID", m.LoginName);
+							treeElement.SetAttribute("text", m.Text);
+							treeElement.SetAttribute("action", "javascript:openMember('" + m.Id + "');");
+							treeElement.SetAttribute("menu", "D");
+							treeElement.SetAttribute("icon", string.IsNullOrEmpty(m.ContentType.IconUrl) ? "member.gif" : m.ContentType.IconUrl);
+							treeElement.SetAttribute("openIcon", string.IsNullOrEmpty(m.ContentType.IconUrl) ? "member.gif" : m.ContentType.IconUrl);
+							treeElement.SetAttribute("nodeType", "member");
+							treeElement.SetAttribute("hasChildren", "true");
+							root.AppendChild(treeElement);
+						}
+					}
+					//if letters equals Others show members that not starts with a through z
+					else if (letter.Equals("Others"))
                     {
                         foreach (Member m in Member.getAllOtherMembers())
                         {
