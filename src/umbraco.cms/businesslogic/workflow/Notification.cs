@@ -52,18 +52,21 @@ namespace umbraco.cms.businesslogic.workflow
             User[] allUsers = User.getAll();
             foreach (User u in allUsers)
             {
-                try
-                {
-                    if (!u.Disabled && u.GetNotifications(Node.Path).IndexOf(Action.Letter.ToString()) > -1)
-                    {
-                        LogHelper.Debug<Notification>(string.Format("Notification about {0} sent to {1} ({2})", ui.Text(Action.Alias, u), u.Name, u.Email));
-                        sendNotification(user, u, (Document)Node, Action);
-                    }
-                }
-                catch (Exception notifyExp)
-                {
-					LogHelper.Error<Notification>("Error in notification", notifyExp);
-                }
+				if (u.Id != user.Id)
+				{
+					try
+					{
+						if (!u.Disabled && u.GetNotifications(Node.Path).IndexOf(Action.Letter.ToString()) > -1)
+						{
+							LogHelper.Debug<Notification>(string.Format("Notification about {0} sent to {1} ({2})", ui.Text(Action.Alias, u), u.Name, u.Email));
+							sendNotification(user, u, (Document)Node, Action);
+						}
+					}
+					catch (Exception notifyExp)
+					{
+						LogHelper.Error<Notification>("Error in notification", notifyExp);
+					}
+				}
             }
         }
 
