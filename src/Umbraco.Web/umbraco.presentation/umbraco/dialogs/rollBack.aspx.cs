@@ -3,6 +3,8 @@ using System.Collections;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.SessionState;
 using System.Web.UI;
@@ -53,11 +55,15 @@ namespace umbraco.presentation.dialogs
                             if (rbl_mode.SelectedValue == "diff") {
                                 
                                 //if display mode is set to diff...
-                                thevalue = library.StripHtml(p.Value.ToString());
-                                Property cP = currentDoc.getProperty(p.PropertyType);
+								
+								//thevalue = library.StripHtml(p.Value.ToString());
+								thevalue = p.Value.ToString().Replace("<", "&lt;").Replace(">", "&gt;");
+                                
+								Property cP = currentDoc.getProperty(p.PropertyType);
                                 if (cP != null && cP.Value != null) {
 
-                                    string cThevalue = library.StripHtml(cP.Value.ToString());
+									//string cThevalue = library.StripHtml(cP.Value.ToString());
+									string cThevalue = cP.Value.ToString().Replace("<", "&lt;").Replace(">", "&gt;");
 
                                     propertiesCompare.Text += "<tr><th style='width: 25%;' valign='top'>" + p.PropertyType.Name + ":</th><td>" + library.ReplaceLineBreaks(cms.businesslogic.utilities.Diff.Diff2Html(cThevalue, thevalue)) + "</td></tr>";
 
@@ -98,9 +104,10 @@ namespace umbraco.presentation.dialogs
                 rbl_mode.AutoPostBack = true;
 
             currentVersionTitle.Text = currentDoc.Text;
-            currentVersionMeta.Text = ui.Text("content", "createDate") + ": " + currentDoc.VersionDate.ToShortDateString() + " " + currentDoc.VersionDate.ToShortTimeString();
-
-            if (!IsPostBack) {
+			currentVersionMeta.Text = "<br/><span style=\"display:inline-block;width:110px\">" + ui.Text("content", "updateDate") + ":</span>" + currentDoc.UpdateDate.ToShortDateString() + " " + currentDoc.UpdateDate.ToShortTimeString()
+				+ "<br/><span style=\"display:inline-block;width:110px\">" + ui.Text("content", "lastPublished") + ":</span>" + currentDoc.VersionDate.ToShortDateString() + " " + currentDoc.VersionDate.ToShortTimeString();
+            
+			if (!IsPostBack) {
                 allVersions.Items.Add(new ListItem(ui.Text("rollback", "selectVersion")+ "...", ""));
                 foreach (DocumentVersionList dl in currentDoc.GetVersions()) {
                     allVersions.Items.Add(new ListItem(dl.Text + " (" + ui.Text("content", "createDate") + ": " + dl.Date.ToShortDateString() + " " + dl.Date.ToShortTimeString() + ")", dl.Version.ToString()));

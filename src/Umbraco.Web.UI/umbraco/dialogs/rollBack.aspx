@@ -31,7 +31,7 @@
 <cc1:Feedback ID="feedBackMsg" runat="server" />
 
 	<cc1:Pane ID="pp_selectVersion" runat="server" Text="Select a version to compare with the current version">
-	  <cc1:PropertyPanel id="pp_currentVersion" Text="Current version" runat="server"><asp:Literal ID="currentVersionTitle" runat="server"/> <small>(<asp:Literal ID="currentVersionMeta" runat="server"/>)</small></cc1:PropertyPanel> 
+	  <cc1:PropertyPanel id="pp_currentVersion" Text="Current version" runat="server"><asp:Literal ID="currentVersionTitle" runat="server"/> <small><asp:Literal ID="currentVersionMeta" runat="server"/></small></cc1:PropertyPanel> 
 	  <cc1:PropertyPanel ID="pp_rollBackTo" Text="Rollback to" runat="server"><asp:DropDownList OnSelectedIndexChanged="version_load" ID="allVersions" runat="server" Width="400px" AutoPostBack="True" CssClass="guiInputTextTiny" /></cc1:PropertyPanel>
 	  <cc1:PropertyPanel id="pp_view" Text="View" runat="server">
 	      <small>
